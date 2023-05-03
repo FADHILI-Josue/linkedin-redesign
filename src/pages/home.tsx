@@ -1,13 +1,15 @@
 import HeaderLink from '@/components/HeaderLink';
 import { BusinessCenter, Explore, GroupAdd, OndemandVideoSharp } from '@mui/icons-material';
+import { getProviders, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { FC } from 'react'
 
 interface homeProps {
-  
+  providers: any
 }
 
-const home: FC<homeProps> = ({}) => {
+const home: FC<homeProps> = ({providers}) => {
+    console.log(providers)
   return <div className='min-h-screen bg-gray-100 space-x-10 relative'>
      <header className="flex justify-around py-4">
         <div className="relative w-36 h-10 flex items-center">
@@ -22,7 +24,7 @@ const home: FC<homeProps> = ({}) => {
             </div>
             <div className="pl-4">
                 <button className="font-semibold flex items-center justify-center text-blue-700 rounded-full py-1.5 px-5 border transition-all border-blue-700 hover:border-2"
-                onClick={() => {console.log('tryiing')}}
+                onClick={() => {signIn('google')}}
                 >
                     Sign In
                 </button>
@@ -56,3 +58,13 @@ const home: FC<homeProps> = ({}) => {
 }
 
 export default home
+
+export const getServerSideProps = async (context:any) => {
+    const providers = await getProviders();
+
+    return {
+        props: {
+            providers,
+        }
+    }
+}
